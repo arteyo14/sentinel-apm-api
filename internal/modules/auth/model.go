@@ -1,6 +1,9 @@
 package auth
 
-import "time"
+import (
+	"os/user"
+	"time"
+)
 
 type RefreshToken struct {
 	ID           string    `gorm:"type:varchar(255);primarykey;column:id"`
@@ -12,6 +15,8 @@ type RefreshToken struct {
 	IP           string    `gorm:"type:varchar(255);not null;column:ip"`
 	CreatedAt    time.Time `gorm:"column:created_at"`
 	UpdatedAt    time.Time `gorm:"column:updated_at"`
+
+	User user.User `gorm:"foreignKey:UserID;references:ID"`
 }
 
 type RefreshTokenRequest struct {

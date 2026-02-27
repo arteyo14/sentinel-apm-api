@@ -1,6 +1,7 @@
 package project
 
 import (
+	"os/user"
 	"time"
 
 	"github.com/google/uuid"
@@ -17,6 +18,8 @@ type Project struct {
 	CreatedBy   uuid.UUID `gorm:"type:uuid;not null;column:created_by"`
 	UpdatedAt   time.Time `gorm:"column:updated_at"`
 	UpdatedBy   uuid.UUID `gorm:"type:uuid;not null;column:updated_by"`
+
+	ProjectMember []ProjectMember `gorm:"foreignKey:ProjectId;references:ID"`
 }
 
 type ProjectMember struct {
@@ -30,4 +33,7 @@ type ProjectMember struct {
 	CreatedBy  uuid.UUID `gorm:"type:uuid;not null;column:created_by"`
 	UpdatedAt  time.Time `gorm:"column:updated_at"`
 	UpdatedBy  uuid.UUID `gorm:"type:uuid;not null;column:updated_by"`
+
+	Project Project   `gorm:"foreignKey:ProjectId;references:ID"`
+	User    user.User `gorm:"foreignKey:UserId;references:ID"`
 }

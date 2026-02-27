@@ -1,6 +1,8 @@
 package memberrole
 
 import (
+	"os/user"
+	"sentinel-apm-api/internal/modules/project"
 	"time"
 
 	"github.com/google/uuid"
@@ -14,4 +16,7 @@ type MemberRole struct {
 	CreatedBy uuid.UUID `gorm:"type:uuid;not null;column:created_by"`
 	UpdatedAt time.Time `gorm:"column:updated_at"`
 	UpdatedBy uuid.UUID `gorm:"type:uuid;not null;column:updated_by"`
+
+	Project project.Project `gorm:"foreignKey:ProjectId;references:ID"`
+	User    user.User       `gorm:"foreignKey:UserId;references:ID"`
 }

@@ -15,6 +15,7 @@ type User struct {
 	BirthDate time.Time `gorm:"column:birth_date"`
 	Gender    *string   `gorm:"type:varchar(255);not null;column:gender"`
 	Company   string    `gorm:"type:varchar(255);not null;column:company"`
+	RoleID    uuid.UUID `gorm:"type:uuid;not null;column:role_id"`
 	Role      string    `gorm:"type:varchar(255);not null;column:role"`
 	CreatedAt time.Time `gorm:"column:created_at"`
 	UpdatedAt time.Time `gorm:"column:updated_at"`
