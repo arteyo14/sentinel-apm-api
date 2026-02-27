@@ -4,6 +4,7 @@ import (
 	"log"
 	"os"
 	"sentinel-apm-api/internal/core/database"
+	"sentinel-apm-api/internal/core/migrate"
 
 	"github.com/gin-gonic/gin"
 )
@@ -14,6 +15,8 @@ func main() {
 	if db == nil {
 		log.Fatal("failed to connect to database")
 	}
+
+	migrate.Migrate(db)
 
 	router := gin.Default()
 	authGroup := router.Group("/auth")
