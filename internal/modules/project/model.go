@@ -1,7 +1,7 @@
 package project
 
 import (
-	"os/user"
+	"sentinel-apm-api/internal/modules/user"
 	"time"
 
 	"github.com/google/uuid"

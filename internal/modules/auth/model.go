@@ -1,7 +1,7 @@
 package auth
 
 import (
-	"os/user"
+	"sentinel-apm-api/internal/modules/user"
 	"time"
 )
 

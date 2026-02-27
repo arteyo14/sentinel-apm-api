@@ -1,8 +1,8 @@
 package memberrole
 
 import (
-	"os/user"
 	"sentinel-apm-api/internal/modules/project"
+	"sentinel-apm-api/internal/modules/user"
 	"time"
 
 	"github.com/google/uuid"

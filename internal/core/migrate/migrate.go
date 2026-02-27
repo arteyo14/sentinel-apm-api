@@ -14,8 +14,8 @@ import (
 func Migrate(db *gorm.DB) {
 	if err := db.AutoMigrate(
 		&user.User{},
-		&project.Project{},
 		&project.ProjectMember{},
+		&project.Project{},
 		&memberrole.MemberRole{},
 		&auth.RefreshToken{},
 		&role.Role{},
