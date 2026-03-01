@@ -37,5 +37,5 @@ type UserRequest struct {
 	BirthDate       *time.Time `json:"birth_date"`
 	Gender          string     `json:"gender"`
 	Company         string     `json:"company"`
-	Role            string     `json:"role"`
+	RoleId          uuid.UUID  `json:"role_Id"`
 }
