@@ -16,6 +16,7 @@ func SeedUser(db *gorm.DB) {
 
 	db.Where("name = ?", "Super Admin").First(&role)
 
+	birthDate := time.Date(1998, 9, 25, 0, 0, 0, 0, time.UTC)
 	var user user.User
 	user.ID = uuid.New()
 	user.Email = "admin@admin.com"
@@ -25,7 +26,7 @@ func SeedUser(db *gorm.DB) {
 	user.IsActive = true
 	user.Gender = "Male"
 	user.Company = "Sentinel APM"
-	user.BirthDate = time.Date(1998, 9, 25, 0, 0, 0, 0, time.UTC)
+	user.BirthDate = &birthDate
 	user.RoleID = uuid.New()
 	user.Role = "Super Admin"
 	user.CreatedAt = time.Now()

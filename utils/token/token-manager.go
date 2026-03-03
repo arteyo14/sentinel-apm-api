@@ -70,7 +70,7 @@ func (tm *tokenManager) ValidateToken(tokenString string) (*TokenCliams, error) 
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, errors.New("unexpected signing method")
 		}
-		return tm.jwtSecret, nil
+		return []byte(tm.jwtSecret), nil
 	})
 
 	if err != nil {

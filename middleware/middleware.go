@@ -18,7 +18,7 @@ func AuthMiddleware() gin.HandlerFunc {
 			response.HandleResponse(c, response.Response{
 				Status: false,
 				Code:   http.StatusUnauthorized,
-				Error:  "Authorization header is required",
+				Error:  "Unauthorized",
 			})
 			c.Abort()
 			return
@@ -29,7 +29,7 @@ func AuthMiddleware() gin.HandlerFunc {
 			response.HandleResponse(c, response.Response{
 				Status: false,
 				Code:   http.StatusUnauthorized,
-				Error:  "Authorization header is required",
+				Error:  "Unauthorized",
 			})
 			c.Abort()
 			return

@@ -24,6 +24,7 @@ func RouteRegister(router *gin.RouterGroup, db *gorm.DB) {
 
 	userGroup := router.Group("/user")
 	userGroup.POST("/", h.CreateUser)
+	userGroup.GET("/", h.GetUsers)
 }
 
 func (h *userHandler) CreateUser(c *gin.Context) {
@@ -53,5 +54,23 @@ func (h *userHandler) CreateUser(c *gin.Context) {
 		Data: gin.H{
 			"user_id": userId,
 		},
+	})
+}
+
+func (h *userHandler) GetUsers(c *gin.Context) {
+	users, err := h.userService.GetUsers()
+	if err != nil {
+		response.HandleResponse(c, response.Response{
+			Status: false,
+			Code:   http.StatusInternalServerError,
+			Error:  err.Error(),
+		})
+		return
+	}
+
+	response.HandleResponse(c, response.Response{
+		Status: true,
+		Code:   http.StatusOK,
+		Data:   users,
 	})
 }

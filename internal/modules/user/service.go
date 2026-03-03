@@ -8,6 +8,7 @@ import (
 
 type UserService interface {
 	CreateUser(req *UserRequest) (*uuid.UUID, error)
+	GetUsers() ([]UserResponse, error)
 }
 
 type userService struct {
@@ -29,7 +30,7 @@ func (s *userService) CreateUser(req *UserRequest) (userId *uuid.UUID, err error
 		LastName:  req.LastName,
 		Email:     req.Email,
 		Password:  req.Password,
-		BirthDate: *birthdate,
+		BirthDate: birthdate,
 		Gender:    req.Gender,
 		Company:   req.Company,
 		RoleID:    req.RoleId,
@@ -41,4 +42,13 @@ func (s *userService) CreateUser(req *UserRequest) (userId *uuid.UUID, err error
 	}
 
 	return userId, nil
+}
+
+func (s *userService) GetUsers() ([]UserResponse, error) {
+	users, err := s.userRepo.GetUsers()
+	if err != nil {
+		return nil, err
+	}
+
+	return users, nil
 }
