@@ -6,6 +6,7 @@ import (
 	"sentinel-apm-api/utils/validation"
 
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 	"gorm.io/gorm"
 )
 
@@ -25,6 +26,8 @@ func RouteRegister(router *gin.RouterGroup, db *gorm.DB) {
 	userGroup := router.Group("/user")
 	userGroup.POST("/", h.CreateUser)
 	userGroup.GET("/", h.GetUsers)
+	userGroup.PUT("/:id", h.UpdateUser)
+	userGroup.DELETE("/:id", h.DeleteUser)
 }
 
 func (h *userHandler) CreateUser(c *gin.Context) {
@@ -72,5 +75,75 @@ func (h *userHandler) GetUsers(c *gin.Context) {
 		Status: true,
 		Code:   http.StatusOK,
 		Data:   users,
+	})
+}
+
+func (h *userHandler) UpdateUser(c *gin.Context) {
+	var req UpdateUserRequest
+	if err := c.ShouldBindJSON(&req); err != nil {
+		response.HandleResponse(c, response.Response{
+			Status: false,
+			Code:   http.StatusBadRequest,
+			Error:  validation.FormateValidationError(err),
+		})
+		return
+	}
+
+	userId := c.Param("id")
+	userIdUUID, err := uuid.Parse(userId)
+	if err != nil {
+		response.HandleResponse(c, response.Response{
+			Status: false,
+			Code:   http.StatusBadRequest,
+			Error:  "invalid user id format",
+		})
+		return
+	}
+
+	if err := h.userService.UpdateUser(userIdUUID, &req); err != nil {
+		response.HandleResponse(c, response.Response{
+			Status: false,
+			Code:   http.StatusInternalServerError,
+			Error:  err.Error(),
+		})
+		return
+	}
+
+	response.HandleResponse(c, response.Response{
+		Status: true,
+		Code:   http.StatusOK,
+		Data: gin.H{
+			"message": "user updated successfully",
+		},
+	})
+}
+
+func (h *userHandler) DeleteUser(c *gin.Context) {
+	userId := c.Param("id")
+	userIdUUID, err := uuid.Parse(userId)
+	if err != nil {
+		response.HandleResponse(c, response.Response{
+			Status: false,
+			Code:   http.StatusBadRequest,
+			Error:  "invalid user id format",
+		})
+		return
+	}
+
+	if err := h.userService.DeleteUser(userIdUUID); err != nil {
+		response.HandleResponse(c, response.Response{
+			Status: false,
+			Code:   http.StatusInternalServerError,
+			Error:  err.Error(),
+		})
+		return
+	}
+
+	response.HandleResponse(c, response.Response{
+		Status: true,
+		Code:   http.StatusOK,
+		Data: gin.H{
+			"message": "user deleted successfully",
+		},
 	})
 }

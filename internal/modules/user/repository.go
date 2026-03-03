@@ -8,6 +8,8 @@ import (
 type UserRepository interface {
 	Create(user *User) (*uuid.UUID, error)
 	GetUsers() ([]UserResponse, error)
+	UpdateUser(userId uuid.UUID, user *User) error
+	DeleteUser(userId uuid.UUID) error
 }
 
 type userRepository struct {
@@ -51,4 +53,18 @@ func (repo *userRepository) GetUsers() ([]UserResponse, error) {
 	}
 
 	return userResponses, nil
+}
+
+func (repo *userRepository) UpdateUser(userId uuid.UUID, user *User) error {
+	if err := repo.db.Where("id = ?", userId).Updates(user).Error; err != nil {
+		return err
+	}
+	return nil
+}
+
+func (repo *userRepository) DeleteUser(userId uuid.UUID) error {
+	if err := repo.db.Where("id = ?", userId).Delete(&User{}).Error; err != nil {
+		return err
+	}
+	return nil
 }

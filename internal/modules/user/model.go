@@ -55,3 +55,14 @@ type UserResponse struct {
 	IsEnabled bool       `json:"is_enabled"`
 	IsActive  bool       `json:"is_active"`
 }
+
+type UpdateUserRequest struct {
+	FirstName string     `json:"first_name"`
+	LastName  string     `json:"last_name"`
+	Email     string     `json:"email"`
+	BirthDate *time.Time `json:"birth_date"`
+	Gender    string     `json:"gender"`
+	Company   string     `json:"company"`
+	RoleID    uuid.UUID  `json:"role_Id"`
+	IsActive  bool       `json:"is_active"`
+}

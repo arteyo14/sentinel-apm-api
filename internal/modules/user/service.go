@@ -9,6 +9,8 @@ import (
 type UserService interface {
 	CreateUser(req *UserRequest) (*uuid.UUID, error)
 	GetUsers() ([]UserResponse, error)
+	UpdateUser(userId uuid.UUID, req *UpdateUserRequest) error
+	DeleteUser(userId uuid.UUID) error
 }
 
 type userService struct {
@@ -51,4 +53,30 @@ func (s *userService) GetUsers() ([]UserResponse, error) {
 	}
 
 	return users, nil
+}
+
+func (s *userService) UpdateUser(userId uuid.UUID, req *UpdateUserRequest) error {
+	user := &User{
+		FirstName: req.FirstName,
+		LastName:  req.LastName,
+		Email:     req.Email,
+		BirthDate: req.BirthDate,
+		Gender:    req.Gender,
+		Company:   req.Company,
+		RoleID:    req.RoleID,
+		IsActive:  req.IsActive,
+	}
+
+	if err := s.userRepo.UpdateUser(userId, user); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (s *userService) DeleteUser(userId uuid.UUID) error {
+	if err := s.userRepo.DeleteUser(userId); err != nil {
+		return err
+	}
+	return nil
 }
