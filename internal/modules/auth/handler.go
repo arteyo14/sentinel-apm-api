@@ -27,6 +27,8 @@ func RouteRegister(router *gin.RouterGroup, db *gorm.DB) {
 
 	authGroup := router.Group("/auth")
 	authGroup.POST("/login", h.Login)
+	authGroup.POST("/refresh-token", h.RefreshToken)
+	authGroup.POST("/logout", h.Logout)
 }
 
 func (h *authHandler) Login(c *gin.Context) {

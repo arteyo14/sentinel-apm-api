@@ -5,6 +5,7 @@ import (
 	"os"
 	"sentinel-apm-api/internal/core/database"
 	"sentinel-apm-api/internal/core/migrate"
+	"sentinel-apm-api/internal/routes"
 
 	"github.com/gin-gonic/gin"
 )
@@ -19,8 +20,7 @@ func main() {
 	migrate.Migrate(db)
 
 	router := gin.Default()
-	authGroup := router.Group("/auth")
-	log.Println(authGroup)
+	routes.SetupRoutes(router, db)
 
 	port := os.Getenv("PORT")
 	if port == "" {
