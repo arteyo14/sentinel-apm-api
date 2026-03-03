@@ -10,6 +10,7 @@ import (
 )
 
 type AuthRepository interface {
+	Register(user *user.User) (*uuid.UUID, error)
 	CheckUserEmail(email string) (*user.User, error)
 	CreateRefreshToken(accessToken string, refreshToken string, userId uuid.UUID) (*RefreshTokenResponse, error)
 	UpdateAccessToken(accessToken string, refreshToken string, userId uuid.UUID) (*RefreshTokenResponse, error)
@@ -22,6 +23,13 @@ type authRepository struct {
 
 func NewAuthRepository(db *gorm.DB) AuthRepository {
 	return &authRepository{db: db}
+}
+
+func (a *authRepository) Register(user *user.User) (*uuid.UUID, error) {
+	if err := a.db.Create(user).Error; err != nil {
+		return nil, err
+	}
+	return &user.ID, nil
 }
 
 func (a *authRepository) CheckUserEmail(email string) (*user.User, error) {

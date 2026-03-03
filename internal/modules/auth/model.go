@@ -43,3 +43,19 @@ type LoginResponse struct {
 	RefreshToken string `json:"refresh_token"`
 	ExpiresAt    int    `json:"expires_at"`
 }
+
+type RegisterRequest struct {
+	Email           string     `json:"email"`
+	Password        string     `json:"password"`
+	ConfirmPassword string     `json:"confirm_password"`
+	FirstName       string     `json:"first_name"`
+	LastName        string     `json:"last_name"`
+	BirthDate       *time.Time `json:"birth_date"`
+	Gender          string     `json:"gender"`
+	Company         string     `json:"company"`
+	RoleId          uuid.UUID  `json:"role_Id"`
+}
+
+type RegisterResponse struct {
+	UserID string `json:"user_id"`
+}

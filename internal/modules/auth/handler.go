@@ -27,8 +27,37 @@ func RouteRegister(router *gin.RouterGroup, db *gorm.DB) {
 
 	authGroup := router.Group("/auth")
 	authGroup.POST("/login", h.Login)
+	authGroup.POST("/register", h.Register)
 	authGroup.POST("/refresh-token", h.RefreshToken)
 	authGroup.POST("/logout", h.Logout)
+}
+
+func (h *authHandler) Register(c *gin.Context) {
+	var req RegisterRequest
+	if err := c.ShouldBindJSON(&req); err != nil {
+		response.HandleResponse(c, response.Response{
+			Status: false,
+			Code:   http.StatusBadRequest,
+			Error:  validation.FormateValidationError(err),
+		})
+		return
+	}
+
+	registerResponse, err := h.authService.Register(req)
+	if err != nil {
+		response.HandleResponse(c, response.Response{
+			Status: false,
+			Code:   http.StatusInternalServerError,
+			Error:  err.Error(),
+		})
+		return
+	}
+
+	response.HandleResponse(c, response.Response{
+		Status: true,
+		Code:   http.StatusOK,
+		Data:   registerResponse,
+	})
 }
 
 func (h *authHandler) Login(c *gin.Context) {

@@ -13,6 +13,7 @@ import (
 
 type AuthService interface {
 	Login(request LoginRequest) (*LoginResponse, error)
+	Register(request RegisterRequest) (*RegisterResponse, error)
 	RefreshToken(request RefreshTokenRequest, sessionUser *context.SessionUser) (*RefreshTokenResponse, error)
 	Logout(sessionUser *context.SessionUser) error
 }
@@ -23,6 +24,33 @@ type authService struct {
 
 func NewAuthService(authRepo AuthRepository) AuthService {
 	return &authService{authRepo: authRepo}
+}
+
+func (s authService) Register(request RegisterRequest) (*RegisterResponse, error) {
+	userData, err := s.authRepo.CheckUserEmail(request.Email)
+	if err != nil {
+		return nil, err
+	}
+
+	if userData != nil {
+		return nil, errors.New("user already exists")
+	}
+
+	var userRequest = user.User{
+		Email:     request.Email,
+		Password:  request.Password,
+		FirstName: request.FirstName,
+		LastName:  request.LastName,
+	}
+
+	userId, err := s.authRepo.Register(&userRequest)
+	if err != nil {
+		return nil, err
+	}
+
+	return &RegisterResponse{
+		UserID: userId.String(),
+	}, nil
 }
 
 func (s authService) Login(request LoginRequest) (*LoginResponse, error) {
