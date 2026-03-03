@@ -9,6 +9,8 @@ import (
 type Role struct {
 	ID        uuid.UUID `gorm:"type:varchar(255);primarykey;column:id"`
 	Name      string    `gorm:"type:varchar(255);not null;column:name"`
+	IsActive  bool      `gorm:"type:boolean;not null;column:is_active"`
+	IsEnabled bool      `gorm:"type:boolean;not null;column:is_enabled"`
 	CreatedAt time.Time `gorm:"column:created_at"`
 	CreatedBy uuid.UUID `gorm:"type:uuid;not null;column:created_by"`
 	UpdatedAt time.Time `gorm:"column:updated_at"`

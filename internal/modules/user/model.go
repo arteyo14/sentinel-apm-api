@@ -13,7 +13,7 @@ type User struct {
 	Email     string    `gorm:"type:varchar(255);not null;unique;column:email"`
 	Password  string    `gorm:"type:varchar(255);not null;column:password"`
 	BirthDate time.Time `gorm:"column:birth_date"`
-	Gender    *string   `gorm:"type:varchar(255);not null;column:gender"`
+	Gender    string    `gorm:"type:varchar(255);not null;column:gender"`
 	Company   string    `gorm:"type:varchar(255);not null;column:company"`
 	RoleID    uuid.UUID `gorm:"type:uuid;not null;column:role_id"`
 	Role      string    `gorm:"type:varchar(255);not null;column:role"`

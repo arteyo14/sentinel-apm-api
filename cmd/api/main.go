@@ -4,7 +4,6 @@ import (
 	"log"
 	"os"
 	"sentinel-apm-api/internal/core/database"
-	"sentinel-apm-api/internal/core/migrate"
 	"sentinel-apm-api/internal/routes"
 
 	"github.com/gin-gonic/gin"
@@ -17,7 +16,9 @@ func main() {
 		log.Fatal("failed to connect to database")
 	}
 
-	migrate.Migrate(db)
+	// migrate.Migrate(db)
+
+	// seed.Seed(db)
 
 	router := gin.Default()
 	routes.SetupRoutes(router, db)

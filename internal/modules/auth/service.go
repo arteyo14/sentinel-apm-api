@@ -4,8 +4,8 @@ import (
 	"errors"
 	"sentinel-apm-api/internal/modules/user"
 	"sentinel-apm-api/utils/context"
+	"sentinel-apm-api/utils/hash"
 	"sentinel-apm-api/utils/token"
-	"sentinel-apm-api/utils/validation"
 	"time"
 
 	"github.com/google/uuid"
@@ -59,7 +59,7 @@ func (s authService) Login(request LoginRequest) (*LoginResponse, error) {
 		return nil, err
 	}
 
-	if err := validation.ValidatePassword(request.Password, userData.Password); err != nil {
+	if err := hash.VerifyPassword(request.Password, userData.Password); err != nil {
 		return nil, err
 	}
 

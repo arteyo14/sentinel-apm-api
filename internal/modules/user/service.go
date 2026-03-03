@@ -30,7 +30,7 @@ func (s *userService) CreateUser(req *UserRequest) (userId *uuid.UUID, err error
 		Email:     req.Email,
 		Password:  req.Password,
 		BirthDate: *birthdate,
-		Gender:    &req.Gender,
+		Gender:    req.Gender,
 		Company:   req.Company,
 		RoleID:    req.RoleId,
 	}
