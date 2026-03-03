@@ -14,7 +14,7 @@ type UserHandler interface {
 }
 
 type userHandler struct {
-	userService *userService
+	userService UserService
 }
 
 func RouteRegister(router *gin.RouterGroup, db *gorm.DB) {
