@@ -2,6 +2,7 @@ package middleware
 
 import (
 	"net/http"
+	"sentinel-apm-api/utils/context"
 	"sentinel-apm-api/utils/response"
 	"sentinel-apm-api/utils/token"
 	"strings"
@@ -47,7 +48,12 @@ func AuthMiddleware() gin.HandlerFunc {
 			return
 		}
 
-		c.Set("claims", claims)
+		context.SetSessionUser(context.SessionUser{
+			UserID:    claims.UserID,
+			Email:     claims.Email,
+			FirstName: claims.FirstName,
+			LastName:  claims.LastName,
+		})
 		c.Next()
 	}
 }

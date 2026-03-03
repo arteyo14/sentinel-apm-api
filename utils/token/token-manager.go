@@ -32,13 +32,26 @@ type TokenCliams struct {
 	jwt.RegisteredClaims
 }
 
-func (tm *tokenManager) GenerateAccessToken(user *user.UserRequest) (string, error) {
+func (tm *tokenManager) GenerateAccessToken(user *user.User) (string, error) {
 	claims := &TokenCliams{
+		UserID:    user.ID.String(),
 		Email:     user.Email,
 		FirstName: user.FirstName,
 		LastName:  user.LastName,
 		RegisteredClaims: jwt.RegisteredClaims{
 			ExpiresAt: jwt.NewNumericDate(time.Now().Add(15 * time.Minute)),
+			IssuedAt:  jwt.NewNumericDate(time.Now()),
+		},
+	}
+
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+	return token.SignedString([]byte(tm.jwtSecret))
+}
+
+func (tm *tokenManager) GenerateRefreshToken() (string, error) {
+	claims := &TokenCliams{
+		RegisteredClaims: jwt.RegisteredClaims{
+			ExpiresAt: jwt.NewNumericDate(time.Now().Add(time.Hour * 24 * 7)),
 			IssuedAt:  jwt.NewNumericDate(time.Now()),
 		},
 	}
@@ -53,8 +66,7 @@ func (tm *tokenManager) ValidateToken(tokenString string) (*TokenCliams, error) 
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, errors.New("unexpected signing method")
 		}
-
-		return []byte(tm.jwtSecret), nil
+		return tm.jwtSecret, nil
 	})
 
 	if err != nil {
