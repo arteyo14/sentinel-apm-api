@@ -42,6 +42,7 @@ func (a *authRepository) CheckUserEmail(email string) (*user.User, error) {
 
 func (a *authRepository) CreateRefreshToken(accessToken string, refreshToken string, userId uuid.UUID) (*RefreshTokenResponse, error) {
 	a.db.Create(&RefreshToken{
+		ID:           uuid.New(),
 		AccessToken:  accessToken,
 		RefreshToken: refreshToken,
 		ExpiredAt:    time.Now().Add(time.Hour * 24 * 7),

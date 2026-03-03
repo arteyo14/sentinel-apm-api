@@ -44,6 +44,10 @@ func (tm *tokenManager) GenerateAccessToken(user *user.User) (string, error) {
 		},
 	}
 
+	if tm.jwtSecret == "" {
+		return "", errors.New("JWT_SECRET is not set")
+	}
+
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	return token.SignedString([]byte(tm.jwtSecret))
 }
