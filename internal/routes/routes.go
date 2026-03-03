@@ -2,6 +2,7 @@ package routes
 
 import (
 	"sentinel-apm-api/internal/modules/auth"
+	"sentinel-apm-api/internal/modules/role"
 	"sentinel-apm-api/internal/modules/user"
 	"sentinel-apm-api/middleware"
 
@@ -18,5 +19,6 @@ func SetupRoutes(router *gin.Engine, db *gorm.DB) {
 	protected.Use(middleware.AuthMiddleware())
 	{
 		user.RouteRegister(protected, db)
+		role.RouteRegister(protected, db)
 	}
 }
